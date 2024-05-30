@@ -1,15 +1,48 @@
 package com.example.springbootprojet.customer;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+
 import java.util.Objects;
 
+
+@Getter
+@Entity
 public class Customer {
+
+    // for mapping this class in table database
+    @Id
+    @SequenceGenerator(
+            name = "customer_id_sequence",
+            sequenceName = "customer_id_sequence"
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "customer_id_sequence"
+    )
     public Integer id;
+    @Column(
+            nullable = false
+    )
     public String name;
+    @Column(
+            nullable = false
+    )
     public String email;
+    @Column(
+            nullable = false
+    )
     public Integer age;
+
     public Customer(){}
     public Customer(Integer id, String name, String email, Integer age) {
         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.age = age;
+    }
+
+    public Customer(String name, String email, Integer age) {
         this.name = name;
         this.email = email;
         this.age = age;
@@ -54,20 +87,4 @@ public class Customer {
         this.age = age;
     }
 
-
-    public Integer getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
 }
