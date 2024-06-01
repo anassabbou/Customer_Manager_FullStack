@@ -8,7 +8,7 @@ import java.util.Optional;
 @Repository("list")
 public class CustomerListDataAccessService implements CustomerDao{
 
-    //DB
+    //DB ***************
     static List<Customer> customers;
     static {
         customers=new ArrayList<>();
@@ -22,6 +22,8 @@ public class CustomerListDataAccessService implements CustomerDao{
         }
 
     }
+
+    //  ************
     @Override
     public List<Customer> selectAllCustomers() {
         return customers;
