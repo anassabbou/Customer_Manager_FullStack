@@ -1,5 +1,7 @@
 package com.example.springbootprojet.customer;
 
+import com.example.springbootprojet.exception.ResourceNotFoundException;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -37,5 +39,32 @@ public class CustomerListDataAccessService implements CustomerDao{
 
     }
 
+    @Override
+    public void insertCustomer(Customer customer){
+        customers.add(customer);
+    }
 
+    @Override
+    public boolean existsPersonWithEmail(String email) {
+        return customers.stream().anyMatch(c->c.email.equals(email));
+    }
+
+    @Override
+    public boolean existsPersonWithId(Integer customerId) {
+        return customers.stream().anyMatch(customer ->customer.getId().equals(customerId));
+    }
+
+    @Override
+    public void deleteCustomerById(Integer id){
+
+        customers.stream()
+                .filter(c->c.getId().equals(id))
+                .findFirst()
+                .ifPresent(customerObj -> customers.remove(customerObj));
+    }
+
+    @Override
+    public void updateCustomer(Customer update) {
+        customers.add(update);
+    }
 }

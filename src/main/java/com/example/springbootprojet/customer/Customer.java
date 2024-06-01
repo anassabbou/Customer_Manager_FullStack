@@ -1,25 +1,23 @@
 package com.example.springbootprojet.customer;
 
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.*;
 
 import java.util.Objects;
 
-
 @Getter
+@Setter
+@ToString @EqualsAndHashCode
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class Customer {
 
     // for mapping this class in table database
     @Id
-    @SequenceGenerator(
-            name = "customer_id_sequence",
-            sequenceName = "customer_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "customer_id_sequence"
-    )
+    @SequenceGenerator(name = "customer_id_sequence", sequenceName = "customer_id_sequence")
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "customer_id_sequence")
+    @Column(nullable = false)
     public Integer id;
     @Column(
             nullable = false
@@ -34,56 +32,10 @@ public class Customer {
     )
     public Integer age;
 
-    public Customer(){}
-    public Customer(Integer id, String name, String email, Integer age) {
-        this.id = id;
-        this.name = name;
-        this.email = email;
-        this.age = age;
-    }
 
     public Customer(String name, String email, Integer age) {
         this.name = name;
         this.email = email;
-        this.age = age;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Customer customer = (Customer) o;
-        return Objects.equals(id, customer.id) && Objects.equals(name, customer.name) && Objects.equals(email, customer.email) && Objects.equals(age, customer.age);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, email, age);
-    }
-
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", age=" + age +
-                '}';
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setAge(Integer age) {
         this.age = age;
     }
 
