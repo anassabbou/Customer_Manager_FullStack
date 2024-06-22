@@ -1,7 +1,5 @@
 package com.example.springbootprojet.customer;
 
-import com.example.springbootprojet.exception.ResourceNotFoundException;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
