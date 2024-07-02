@@ -5,10 +5,8 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.verify;
 
 class CustomerJPADataAccessServiceTest {
@@ -53,8 +51,8 @@ class CustomerJPADataAccessServiceTest {
             Customer customer= new Customer(
                     faker.name().fullName(),
                     faker.internet().emailAddress(),
-                    23
-            );
+                    23,
+                    Gender.MALE);
         // When
             underTest.insertCustomer(customer);
 
@@ -100,8 +98,8 @@ class CustomerJPADataAccessServiceTest {
                     1,
                     faker.name().fullName(),
                     faker.internet().emailAddress(),
-                    25
-            );
+                    25,
+                    Gender.MALE);
         // When
             underTest.updateCustomer(update);
         // Then

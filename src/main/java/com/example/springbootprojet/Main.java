@@ -1,6 +1,7 @@
 package com.example.springbootprojet;
 import com.example.springbootprojet.customer.Customer;
 import com.example.springbootprojet.customer.CustomerRepository;
+import com.example.springbootprojet.customer.Gender;
 import com.github.javafaker.Faker;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -19,12 +20,13 @@ public class Main {
     CommandLineRunner runner(CustomerRepository customerRepository){
         return args -> {
             Faker faker=new Faker();
-            Random rAge=new Random();
+            Random random=new Random();
+            int rAge= random.nextInt(18,60);
+            Gender gender= rAge % 2 == 0 ? Gender.MALE : Gender.FEMALE;
             Customer customer=new Customer(
               faker.name().fullName(),
               faker.internet().emailAddress(),
-              rAge.nextInt(18,60)
-            );
+              rAge, gender);
             // Use this with DDL (hibernates)
             customerRepository.save(customer);
         };

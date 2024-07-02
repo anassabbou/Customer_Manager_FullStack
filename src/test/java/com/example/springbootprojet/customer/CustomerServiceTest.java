@@ -3,21 +3,18 @@ package com.example.springbootprojet.customer;
 import com.example.springbootprojet.exception.DuplicateResourceException;
 import com.example.springbootprojet.exception.RequestValidationException;
 import com.example.springbootprojet.exception.ResourceNotFoundException;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 // this @ExtendWith have some work of MockAnnotation.openMocks() and
@@ -48,8 +45,8 @@ class CustomerServiceTest {
         // Given
             int id = 8;
             Customer customer=new Customer(
-                    id,"anass","anass@gmail.com",24
-            );
+                    id,"anass","anass@gmail.com",24,
+                    Gender.MALE);
         when(customerDao.selectCustomerById(id))
                 .thenReturn(Optional.of(customer));
         // When
@@ -77,7 +74,7 @@ assertThatThrownBy(()->underTest.getCustomer(id))
         // Given
             String email="anass@gmail.com";
             when(customerDao.existsPersonWithEmail(email)).thenReturn(false);
-            CustomerRegistrationRequest request=new CustomerRegistrationRequest("anass","anass@gmail.com",24);
+            CustomerRegistrationRequest request=new CustomerRegistrationRequest("anass","anass@gmail.com",24, Gender.MALE);
         // When
             underTest.addCustomer(request);
         // Then
@@ -96,7 +93,7 @@ assertThatThrownBy(()->underTest.getCustomer(id))
         String email="anass@gmail.com";
         when(customerDao.existsPersonWithEmail(email)).thenReturn(true);
 
-        CustomerRegistrationRequest request=new CustomerRegistrationRequest("anass",email,24);
+        CustomerRegistrationRequest request=new CustomerRegistrationRequest("anass",email,24, Gender.MALE);
         // When
         assertThatThrownBy(()->underTest.addCustomer(request)).isInstanceOf(DuplicateResourceException.class)
                 .hasMessage("Email already taken");
@@ -138,12 +135,12 @@ assertThatThrownBy(()->underTest.getCustomer(id))
                     id,
                     "anass",
                     "anass@gmail.com",
-                    24
-            );
+                    24,
+                    Gender.MALE);
             String newEmail="abbou@gmail.com";
             when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
             when(customerDao.existsPersonWithEmail(newEmail)).thenReturn(false);
-            CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest("abbou",newEmail,26);
+            CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest("abbou",newEmail,26, Gender.MALE);
         // When
             underTest.updateCustomer(id,updateRequest);
         // Then
@@ -166,10 +163,10 @@ assertThatThrownBy(()->underTest.getCustomer(id))
                 id,
                 "anass",
                 "anass@gmail.com",
-                24
-        );
+                24,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
-        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest("abbou",null,null);
+        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest("abbou",null,null, Gender.MALE);
         // When
         underTest.updateCustomer(id,updateRequest);
         // Then
@@ -192,12 +189,12 @@ assertThatThrownBy(()->underTest.getCustomer(id))
                 id,
                 "anass",
                 "anass@gmail.com",
-                24
-        );
+                24,
+                Gender.MALE);
         String newEmail="abbou@gmail.com";
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         when(customerDao.existsPersonWithEmail(newEmail)).thenReturn(false);
-        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,newEmail,null);
+        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,newEmail,null, Gender.MALE);
         // When
         underTest.updateCustomer(id,updateRequest);
         // Then
@@ -217,10 +214,10 @@ assertThatThrownBy(()->underTest.getCustomer(id))
         // Given
         int id=1;
 
-        Customer customer=new Customer(id, "anass", "anass@gmail.com", 24);
+        Customer customer=new Customer(id, "anass", "anass@gmail.com", 24, Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         String newEmail="abbou@gmail.com";
-        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,newEmail,null);
+        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,newEmail,null, Gender.MALE);
         when(customerDao.existsPersonWithEmail(newEmail)).thenReturn(true);
 
         // When
@@ -241,10 +238,10 @@ assertThatThrownBy(()->underTest.getCustomer(id))
                 id,
                 "anass",
                 "anass@gmail.com",
-                24
-        );
+                24,
+                Gender.MALE);
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
-        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,null,26);
+        CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(null,null,26, Gender.MALE);
         // When
         underTest.updateCustomer(id,updateRequest);
         // Then
@@ -267,14 +264,15 @@ assertThatThrownBy(()->underTest.getCustomer(id))
                 id,
                 "anass",
                 "anass@gmail.com",
-                24
-        );
+                24,
+                Gender.MALE);
 
         when(customerDao.selectCustomerById(id)).thenReturn(Optional.of(customer));
         CustomerRegistrationRequest updateRequest= new CustomerRegistrationRequest(
                 customer.getName(),
                 customer.getEmail(),
-                customer.getAge()
+                customer.getAge(),
+                customer.getGender()
         );
         // When
 assertThatThrownBy(()->underTest.updateCustomer(id,updateRequest))

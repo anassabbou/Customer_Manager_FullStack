@@ -5,15 +5,13 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+
 //@SpringBootTest
 @DataJpaTest
 // disable embedded database
@@ -36,11 +34,11 @@ class CustomerRepositoryTest extends AbstractTestContainers {
 
                 FAKER.name().fullName(),
                 FAKER.internet().emailAddress() + "-"+ UUID.randomUUID(),
-                20
-        );// id null
+                20,
+                Gender.MALE);// id null
         underTest.save(customer);
         // When
-        boolean actual= underTest.existsCustomerByEmail(customer.email);
+        boolean actual= underTest.existsCustomerByEmail(customer.getEmail());
 
         // Then
         assertThat(actual).isTrue();
@@ -53,12 +51,12 @@ class CustomerRepositoryTest extends AbstractTestContainers {
         Customer customer=new Customer(
                 FAKER.name().fullName(),
                 FAKER.internet().emailAddress() + "-"+ UUID.randomUUID(),
-                20
-        );
+                20,
+                Gender.MALE);
         underTest.save(customer);
         int id= underTest.findAll()
                 .stream()
-                .filter(c->c.getEmail().equals(customer.email))
+                .filter(c->c.getEmail().equals(customer.getEmail()))
                 .map(Customer::getId)
                 .findFirst()
                 .orElseThrow();

@@ -37,9 +37,8 @@ public class CustomerService {
         customerDao.insertCustomer(new Customer(
                 customerRegistrationRequest.name(),
                 customerRegistrationRequest.email(),
-                customerRegistrationRequest.age()
-        ));
-
+                customerRegistrationRequest.age(),
+                customerRegistrationRequest.gender()));
     }
 
     public void deleteCustomerByID(Integer id){
@@ -56,15 +55,15 @@ public class CustomerService {
     public void updateCustomer(Integer id, CustomerRegistrationRequest updateRequest){
         Customer customer= getCustomer(id);
         boolean changes=false;
-        if(updateRequest.name() !=null && !updateRequest.name().equals(customer.name)){
+        if(updateRequest.name() !=null && !updateRequest.name().equals(customer.getName())){
             customer.setName(updateRequest.name());
             changes=true;
         }
-        if(updateRequest.age() !=null && !updateRequest.age().equals(customer.age)){
+        if(updateRequest.age() !=null && !updateRequest.age().equals(customer.getAge())){
             customer.setAge(updateRequest.age());
             changes=true;
         }
-        if(updateRequest.email() !=null && !updateRequest.email().equals(customer.email)){
+        if(updateRequest.email() !=null && !updateRequest.email().equals(customer.getEmail())){
             if(customerDao.existsPersonWithEmail(updateRequest.email())){
                 throw new DuplicateResourceException(
                         "Email already taken"

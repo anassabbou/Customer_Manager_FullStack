@@ -2,9 +2,6 @@ package com.example.springbootprojet.customer;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.relational.core.sql.In;
-
-import java.math.BigInteger;
 
 
 @Entity
@@ -17,7 +14,7 @@ import java.math.BigInteger;
                 )
         }
 )
-@Getter @Setter @ToString @EqualsAndHashCode @AllArgsConstructor @NoArgsConstructor
+@Getter @Setter @ToString @EqualsAndHashCode @NoArgsConstructor
 public class Customer {
 
     // for mapping this class in table database
@@ -32,25 +29,39 @@ public class Customer {
             generator = "customer_id_seq"
     )
     @Column(columnDefinition = "BIGSERIAL")
-    public Integer id;
+    private Integer id;
     @Column(
             nullable = false
     )
-    public String name;
+    private String name;
     @Column(
             nullable = false
     )
-    public String email;
+    private String email;
     @Column(
             nullable = false
     )
-    public Integer age;
+    private Integer age;
+    // for example
+    @Column(
+            nullable = false
+    )
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
 
-    public Customer(String name, String email, Integer age) {
+    public Customer(Integer id, String name, String email, Integer age, Gender gender) {
+        this.id=id;
         this.name = name;
         this.email = email;
         this.age = age;
+        this.gender=gender;
+    }
+    public Customer(String name, String email, Integer age, Gender gender) {
+        this.name = name;
+        this.email = email;
+        this.age = age;
+        this.gender=gender;
     }
 
 }

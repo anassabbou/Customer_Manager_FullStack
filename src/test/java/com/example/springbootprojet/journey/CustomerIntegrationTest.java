@@ -3,6 +3,7 @@ package com.example.springbootprojet.journey;
 import com.example.springbootprojet.customer.Customer;
 import com.example.springbootprojet.customer.CustomerRegistrationRequest;
 import com.example.springbootprojet.customer.CustomerUpdateRequest;
+import com.example.springbootprojet.customer.Gender;
 import com.github.javafaker.Faker;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,13 @@ public class CustomerIntegrationTest {
         int age=new Random().nextInt(18,40);
         String name=FAKER.name().fullName();
         String email=FAKER.name().lastName() + UUID.randomUUID() + "@gmail.com";
+        Gender gender= age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+
         CustomerRegistrationRequest request= new CustomerRegistrationRequest(
                 name,
                 email,
-                age
+                age,
+                gender
         );
     // send a post request
         webTestClient.post().uri("api/v1/customers")
@@ -54,7 +58,7 @@ public class CustomerIntegrationTest {
                     .getResponseBody();
 
         // make sure that customer is present
-            Customer expectedCustomer= new Customer(name,email,age);
+            Customer expectedCustomer= new Customer(name,email,age, Gender.MALE);
             assertThat(allCustomers)
                     .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
                     .contains(expectedCustomer);
@@ -76,7 +80,8 @@ public class CustomerIntegrationTest {
             int age=new Random().nextInt(18,40);
             String name=FAKER.name().fullName();
             String email=FAKER.name().lastName() + UUID.randomUUID() + "@gmail.com";
-            CustomerRegistrationRequest request= new CustomerRegistrationRequest(name, email, age);
+            Gender gender= age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
+            CustomerRegistrationRequest request= new CustomerRegistrationRequest(name, email, age, gender);
         // send a post request
             webTestClient.post().uri("api/v1/customers")
                     .accept(MediaType.APPLICATION_JSON)
@@ -115,10 +120,12 @@ public class CustomerIntegrationTest {
             int age=new Random().nextInt(18,40);
             String name=FAKER.name().fullName();
             String email=FAKER.name().lastName() + UUID.randomUUID() + "@gmail.com";
+            Gender gender= age % 2 == 0 ? Gender.MALE : Gender.FEMALE;
             CustomerRegistrationRequest request= new CustomerRegistrationRequest(
                     name,
                     email,
-                    age
+                    age,
+                    gender
             );
         // send a post request
             webTestClient.post().uri("api/v1/customers")
@@ -159,11 +166,8 @@ public class CustomerIntegrationTest {
                 .returnResult()
                 .getResponseBody();
 
-        Customer expectedUpdate= new Customer(id,newName,email,age);
+        Customer expectedUpdate= new Customer(id,newName,email,age, gender);
         assertThat(updatedCustomer).isEqualTo(expectedUpdate);
-
-
-
     }
 
 }

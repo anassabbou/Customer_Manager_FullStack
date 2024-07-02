@@ -12,8 +12,8 @@ public class CustomerListDataAccessService implements CustomerDao{
     static List<Customer> customers;
     static {
         customers=new ArrayList<>();
-        Customer anass= new Customer(1,"anass","anas@gmail.com",23);
-        Customer khalid= new Customer(2,"khalid","khalid@gmail.com",22);
+        Customer anass= new Customer(1,"anass","anas@gmail.com",23,Gender.MALE);
+        Customer khalid= new Customer(2,"khalid","khalid@gmail.com",22,Gender.MALE);
         try{
             customers.add(anass);
             customers.add(khalid);
@@ -44,7 +44,7 @@ public class CustomerListDataAccessService implements CustomerDao{
 
     @Override
     public boolean existsPersonWithEmail(String email) {
-        return customers.stream().anyMatch(c->c.email.equals(email));
+        return customers.stream().anyMatch(c->c.getEmail().equals(email));
     }
 
     @Override
